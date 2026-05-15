@@ -30,7 +30,7 @@
           <template
             v-if="upgradeDialogType === upgradeDialogTypes.CREATE_EVENT"
           >
-            You've run out of free events. Upgrade to create unlimited events.
+            You can create unlimited events with Timeful.
             <br class="tw-hidden sm:tw-block" />
             Your payment helps us keep the site running.
           </template>
@@ -285,7 +285,7 @@
           <template
             v-if="upgradeDialogType === upgradeDialogTypes.CREATE_EVENT"
           >
-            You've run out of free events. Upgrade to create unlimited events.
+            You can create unlimited events with Timeful.
             <br class="tw-hidden sm:tw-block" />
             Your payment helps us keep the site running.
           </template>
@@ -514,7 +514,7 @@ export default {
             (this.yearlyStudentPrice.unit_amount /
               12 /
               this.monthlyStudentPrice.unit_amount) *
-              100
+              100,
           )
         )
       }
@@ -524,7 +524,7 @@ export default {
         100 -
         Math.round(
           (this.yearlyPrice.unit_amount / 12 / this.monthlyPrice.unit_amount) *
-            100
+            100,
         )
       )
     },
@@ -575,12 +575,12 @@ export default {
         if (this.isStudent && this.monthlyStudentPrice) {
           pricesShown.push(
             `MONTHLY (Student): ${this.formattedPrice(
-              this.monthlyStudentPrice
-            )}/mo`
+              this.monthlyStudentPrice,
+            )}/mo`,
           )
         } else {
           pricesShown.push(
-            `MONTHLY: ${this.formattedPrice(this.monthlyPrice)}/mo`
+            `MONTHLY: ${this.formattedPrice(this.monthlyPrice)}/mo`,
           )
         }
       }
@@ -589,16 +589,16 @@ export default {
         if (this.isStudent && this.yearlyStudentPrice) {
           console.log(
             "yearlyStudentPrice",
-            this.formattedPrice(this.yearlyStudentPrice)
+            this.formattedPrice(this.yearlyStudentPrice),
           )
           pricesShown.push(
             `YEARLY (Student): ${this.formattedPrice(
-              this.yearlyStudentPrice
-            )}/mo`
+              this.yearlyStudentPrice,
+            )}/mo`,
           )
         } else {
           pricesShown.push(
-            `YEARLY: ${this.formattedPrice(this.yearlyPrice)}/mo`
+            `YEARLY: ${this.formattedPrice(this.yearlyPrice)}/mo`,
           )
         }
       }
@@ -607,12 +607,12 @@ export default {
         if (this.isStudent && this.lifetimeStudentPrice) {
           pricesShown.push(
             `LIFETIME (Student): ${this.formattedPrice(
-              this.lifetimeStudentPrice
-            )}`
+              this.lifetimeStudentPrice,
+            )}`,
           )
         } else {
           pricesShown.push(
-            `LIFETIME: ${this.formattedPrice(this.lifetimePrice)}`
+            `LIFETIME: ${this.formattedPrice(this.lifetimePrice)}`,
           )
         }
       }
@@ -639,16 +639,40 @@ export default {
       }
     },
     async fetchPrice() {
-      let res;
+      let res
       // Mock stripe price results in development mode as the Stripe API won't be accessible
       if (process.env.NODE_ENV === "development") {
         res = {
-          lifetime: { id: "price_dev_lifetime", unit_amount: 9999, recurring: null },
-          monthly: { id: "price_dev_monthly", unit_amount: 999, recurring: { interval: "month" } },
-          yearly: { id: "price_dev_yearly", unit_amount: 7999, recurring: { interval: "year" } },
-          lifetimeStudent: { id: "price_dev_lifetime_student", unit_amount: 4999, recurring: null },
-          monthlyStudent: { id: "price_dev_monthly_student", unit_amount: 499, recurring: { interval: "month" } },
-          yearlyStudent: { id: "price_dev_yearly_student", unit_amount: 3999, recurring: { interval: "year" } },
+          lifetime: {
+            id: "price_dev_lifetime",
+            unit_amount: 9999,
+            recurring: null,
+          },
+          monthly: {
+            id: "price_dev_monthly",
+            unit_amount: 999,
+            recurring: { interval: "month" },
+          },
+          yearly: {
+            id: "price_dev_yearly",
+            unit_amount: 7999,
+            recurring: { interval: "year" },
+          },
+          lifetimeStudent: {
+            id: "price_dev_lifetime_student",
+            unit_amount: 4999,
+            recurring: null,
+          },
+          monthlyStudent: {
+            id: "price_dev_monthly_student",
+            unit_amount: 499,
+            recurring: { interval: "month" },
+          },
+          yearlyStudent: {
+            id: "price_dev_yearly_student",
+            unit_amount: 3999,
+            recurring: { interval: "year" },
+          },
         }
       } else {
         res = await get("/stripe/price?exp=" + this.pricingPageConversion)
@@ -704,7 +728,7 @@ export default {
         if (this.upgradeDialogData) {
           if (this.upgradeDialogType === upgradeDialogTypes.SCHEDULE_EVENT) {
             originUrl = `${originUrl}?scheduled_event=${encodeURIComponent(
-              JSON.stringify(this.upgradeDialogData.scheduledEvent)
+              JSON.stringify(this.upgradeDialogData.scheduledEvent),
             )}`
           }
         }
@@ -718,7 +742,7 @@ export default {
       } catch (e) {
         console.error(e)
         this.showError(
-          "There was an error generating a checkout url. Please try again later."
+          "There was an error generating a checkout url. Please try again later.",
         )
       } finally {
         this.$set(this.loadingCheckoutUrl, price.id, false)

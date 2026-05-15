@@ -32,15 +32,6 @@
         <router-link :to="{ name: 'home' }">
           <Logo type="timeful" />
         </router-link>
-        <v-expand-x-transition>
-          <span
-            v-if="isPremiumUser"
-            class="tw-ml-2 tw-cursor-default tw-rounded-md tw-bg-[linear-gradient(-25deg,#0a483d,#00994c,#126045,#0a483d)] tw-px-2 tw-py-1 tw-text-sm tw-font-semibold tw-text-white tw-opacity-80"
-          >
-            Premium
-          </span>
-        </v-expand-x-transition>
-
         <v-spacer />
 
         <v-btn
@@ -183,8 +174,10 @@ html {
   border: 1px solid #4f4f4f1f !important;
 }
 .v-menu__content {
-  box-shadow: 0px 5px 5px -1px rgba(0, 0, 0, 0.1),
-    0px 8px 10px 0.5px rgba(0, 0, 0, 0.07), 0px 3px 14px 1px rgba(0, 0, 0, 0.06) !important;
+  box-shadow:
+    0px 5px 5px -1px rgba(0, 0, 0, 0.1),
+    0px 8px 10px 0.5px rgba(0, 0, 0, 0.07),
+    0px 3px 14px 1px rgba(0, 0, 0, 0.06) !important;
 }
 .overlay-avail-shadow-green {
   box-shadow: 0px 3px 6px 0px #1c7d454d !important;
@@ -229,7 +222,7 @@ html {
 </style>
 
 <script>
-import { mapMutations, mapState, mapActions, mapGetters } from "vuex"
+import { mapMutations, mapState, mapActions } from "vuex"
 import {
   get,
   getLocation,
@@ -237,15 +230,8 @@ import {
   post,
   signInGoogle,
   signInOutlook,
-  isPremiumUser,
 } from "@/utils"
-import {
-  authTypes,
-  calendarTypes,
-  eventTypes,
-  numFreeEvents,
-  upgradeDialogTypes,
-} from "@/constants"
+import { authTypes, calendarTypes, eventTypes } from "@/constants"
 import AutoSnackbar from "@/components/AutoSnackbar"
 import AuthUserMenu from "@/components/AuthUserMenu.vue"
 import SignInNotSupportedDialog from "@/components/SignInNotSupportedDialog.vue"
@@ -287,12 +273,10 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(["isPremiumUser"]),
     ...mapState([
       "authUser",
       "error",
       "info",
-      "enablePaywall",
       "upgradeDialogVisible",
       "newDialogOptions",
     ]),
@@ -329,15 +313,9 @@ export default {
       "setAuthUser",
       "setSignUpFormEnabled",
       "setPricingPageConversion",
-      "setEnablePaywall",
       "setFeatureFlagsLoaded",
     ]),
-    ...mapActions([
-      "getEvents",
-      "showUpgradeDialog",
-      "hideUpgradeDialog",
-      "createNew",
-    ]),
+    ...mapActions(["getEvents", "hideUpgradeDialog", "createNew"]),
     handleScroll(e) {
       this.scrollY = window.scrollY
     },
@@ -413,7 +391,6 @@ export default {
       // this.$posthog.getFeatureFlag("pricing-page-conversion")
       // )
       // )
-      // this.setEnablePaywall(this.$posthog.isFeatureEnabled("enable-paywall"))
       this.setFeatureFlagsLoaded(true)
     },
     trackFeedbackClick() {

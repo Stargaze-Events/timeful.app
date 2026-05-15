@@ -58,6 +58,7 @@ func getProfile(c *gin.Context) {
 	// Get number of events created this month
 	eventsCreatedThisMonth := db.GetEventsCreatedThisMonth(user.Id)
 	user.NumEventsCreated = eventsCreatedThisMonth
+	user.IsPremium = utils.TruePtr()
 
 	db.UpdateDailyUserLog(user)
 

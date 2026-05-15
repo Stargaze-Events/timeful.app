@@ -18,7 +18,7 @@ export const onLongPress = (element, callback, capture = false) => {
         callback(e.target)
       }, 500)
     },
-    capture
+    capture,
   )
 
   element.addEventListener(
@@ -26,7 +26,7 @@ export const onLongPress = (element, callback, capture = false) => {
     function (e) {
       e.preventDefault()
     },
-    capture
+    capture,
   )
 
   element.addEventListener(
@@ -34,7 +34,7 @@ export const onLongPress = (element, callback, capture = false) => {
     function () {
       if (timeoutId) clearTimeout(timeoutId)
     },
-    capture
+    capture,
   )
 
   element.addEventListener(
@@ -42,7 +42,7 @@ export const onLongPress = (element, callback, capture = false) => {
     function () {
       if (timeoutId) clearTimeout(timeoutId)
     },
-    capture
+    capture,
   )
 }
 
@@ -108,7 +108,7 @@ export const validateEmail = (email) => {
   return String(email)
     .toLowerCase()
     .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     )
 }
 
@@ -147,7 +147,7 @@ export const isTouchEnabled = () => {
 /** Returns whether the element is in the viewport */
 export const isElementInViewport = (
   el,
-  { topOffset = 0, leftOffset = 0, rightOffset = 0, bottomOffset = 0 }
+  { topOffset = 0, leftOffset = 0, rightOffset = 0, bottomOffset = 0 },
 ) => {
   var rect = el.getBoundingClientRect()
 
@@ -187,7 +187,7 @@ export const lightOrDark = (color) => {
   if (color.match(/^rgb/)) {
     // If RGB --> store the red, green, blue values in separate variables
     color = color.match(
-      /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/
+      /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/,
     )
 
     r = color[1]
@@ -215,15 +215,7 @@ export const lightOrDark = (color) => {
 
 /** Returns whether the given user is a premium user */
 export const isPremiumUser = (authUser) => {
-  if (!authUser) return false
-
-  if (authUser.stripeCustomerId) {
-    if (authUser.isPremium !== null) {
-      return authUser.isPremium
-    }
-    return true
-  }
-  return false
+  return Boolean(authUser)
 }
 
 /** Adds an event ID to the 'eventsCreated' list in localStorage */
@@ -264,29 +256,29 @@ function weekStart(region, language) {
   const regionSat = "AEAFBHDJDZEGIQIRJOKWLYOMQASDSY".match(/../g)
   const regionSun =
     "AGARASAUBDBRBSBTBWBZCACNCODMDOETGTGUHKHNIDILINJMJPKEKHKRLAMHMMMOMTMXMZNINPPAPEPHPKPRPTPYSASGSVTHTTTWUMUSVEVIWSYEZAZW".match(
-      /../g
+      /../g,
     )
   const languageSat = ["ar", "arq", "arz", "fa"]
   const languageSun =
     "amasbndzengnguhehiidjajvkmknkolomhmlmrmtmyneomorpapssdsmsnsutatethtnurzhzu".match(
-      /../g
+      /../g,
     )
 
   return region
     ? regionSun.includes(region)
       ? "sun"
       : regionSat.includes(region)
-      ? "sat"
-      : "mon"
+        ? "sat"
+        : "mon"
     : languageSun.includes(language)
-    ? "sun"
-    : languageSat.includes(language)
-    ? "sat"
-    : "mon"
+      ? "sun"
+      : languageSat.includes(language)
+        ? "sat"
+        : "mon"
 }
 function weekStartLocale(locale) {
   const parts = locale.match(
-    /^([a-z]{2,3})(?:-([a-z]{3})(?=$|-))?(?:-([a-z]{4})(?=$|-))?(?:-([a-z]{2}|\d{3})(?=$|-))?/i
+    /^([a-z]{2,3})(?:-([a-z]{3})(?=$|-))?(?:-([a-z]{4})(?=$|-))?(?:-([a-z]{2}|\d{3})(?=$|-))?/i,
   )
   return weekStart(parts[4], parts[1])
 }
